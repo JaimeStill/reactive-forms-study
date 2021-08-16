@@ -1,1 +1,12 @@
-<p class="mat-title m8">Home</p>
+<section fxLayout="column"
+         fxLayoutAlign="start stretch"
+         class="p8">
+  <p class="mat-subheading-2 m4">Name Editor</p>
+  <name-editor fxFlexAlign="start"
+               (update)="updateName($event)"></name-editor>
+  <p class="m4"><strong>Name: </strong>{{name ? name : 'N/A'}}</p>
+  <mat-divider class="my8 mx4"></mat-divider>
+  <p class="mat-subheading-2 m4">Profile Editor</p>
+  <profile-editor (update)="updateProfile($event)"></profile-editor>
+  <pre *ngIf="profile?.firstName || profile?.lastName"><code>{{profile | json}}</code></pre>
+</section>
