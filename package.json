@@ -5,6 +5,7 @@
     "ng": "ng",
     "build": "ng build",
     "build:core": "ng build core",
+    "deploy": "ng build --output-path docs --base-href /reactive-forms-study/ && copy docs\\index.html docs\\404.html",
     "start": "ng serve --configuration development",
     "watch": "ng build core --watch --configuration development"
   },
