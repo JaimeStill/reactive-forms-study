@@ -6,3 +6,4 @@ export * from './organization';
 export * from './person';
 export * from './position';
 export * from './profile';
+export * from './storage-state';

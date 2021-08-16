@@ -26,8 +26,10 @@ export const AssociateForm = (associate: Associate, fb: FormBuilder): FormGroup 
     jobTitle: [associate.jobTitle, Validators.required],
     email: [
       associate.email,
-      Validators.required,
-      Validators.email
+      [
+        Validators.required,
+        Validators.email
+      ]
     ],
     phone: [
       associate.phone,

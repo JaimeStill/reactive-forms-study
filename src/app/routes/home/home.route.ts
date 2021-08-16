@@ -1,16 +1,66 @@
-import { Component } from '@angular/core';
-import { Profile } from 'core';
+import {
+  Component,
+  OnInit
+} from '@angular/core';
+
+import {
+  Address,
+  AppService,
+  Associate,
+  Executive,
+  ExecutiveDialog
+} from 'core';
+
+import { MatDialog } from '@angular/material/dialog';
 
 @Component({
   selector: 'home-route',
   templateUrl: 'home.route.html'
 })
-export class HomeRoute {
-  name: string = '';
-  profile!: Profile | null;
+export class HomeRoute implements OnInit {
+  executive: Executive;
 
-  updateName = (event: string) => this.name = event;
+  constructor(
+    private dialog: MatDialog,
+    public app: AppService
+  ) { }
 
-  updateProfile = (event: Profile | null) => this.profile = event;
+  ngOnInit() {
+    this.app.getExecutives();
+  }
+
+  selected = (e: Executive) => e?.id === this.executive?.id;
+
+  selectExecutive = (e: Executive) => {
+    if (this.selected(e)) {
+      this.executive = null;
+      this.app.clearAssociates();
+    } else {
+      this.executive = e;
+      this.app.getAssociates(e.id);
+    }
+  }
+
+  addExecutive = () => this.dialog.open(ExecutiveDialog, {
+    data: {
+      address: {} as Address
+    } as Executive,
+    disableClose: true,
+    width: '480px'
+  })
+  .afterClosed()
+  .subscribe(res => res && this.app.getExecutives());
+
+  editExecutive = (e: Executive) => this.dialog.open(ExecutiveDialog, {
+    data: Object.assign({} as Executive, e),
+    disableClose: true,
+    width: '480px'
+  })
+  .afterClosed()
+  .subscribe(res => res && this.app.getExecutives());
+
+  addAssociate = () => { }
+
+  editAssociate = (a: Associate) => { }
 }
 

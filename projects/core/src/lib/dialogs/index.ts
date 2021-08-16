@@ -1,7 +1,11 @@
 import { ConfirmDialog } from './confirm';
 
+import { PersonDialogs } from './person';
+
 export const Dialogs = [
-  ConfirmDialog
+  ConfirmDialog,
+  ...PersonDialogs
 ];
 
 export * from './confirm';
+export * from './person';

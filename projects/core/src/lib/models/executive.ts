@@ -28,8 +28,10 @@ export const ExecutiveForm = (executive: Executive, fb: FormBuilder, ssnPattern:
     jobTitle: [executive.jobTitle, Validators.required],
     ssn: [
       executive.ssn,
-      Validators.required,
-      Validators.pattern(ssnPattern)
+      [
+        Validators.required,
+        Validators.pattern(ssnPattern)
+      ]
     ],
     isActive: [executive.isActive],
     address: fb.group({

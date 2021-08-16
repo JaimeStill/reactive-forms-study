@@ -1,12 +1,78 @@
-<section fxLayout="column"
-         fxLayoutAlign="start stretch"
-         class="p8">
-  <p class="mat-subheading-2 m4">Name Editor</p>
-  <name-editor fxFlexAlign="start"
-               (update)="updateName($event)"></name-editor>
-  <p class="m4"><strong>Name: </strong>{{name ? name : 'N/A'}}</p>
-  <mat-divider class="my8 mx4"></mat-divider>
-  <p class="mat-subheading-2 m4">Profile Editor</p>
-  <profile-editor (update)="updateProfile($event)"></profile-editor>
-  <pre *ngIf="profile?.firstName || profile?.lastName"><code>{{profile | json}}</code></pre>
+<ng-template #loading>
+  <mat-progress-bar mode="indeterminate"
+                    color="accent"></mat-progress-bar>
+</ng-template>
+<section fxLayout="row"
+         fxLayoutAlign="start stretch">
+  <section fxLayout="column"
+           fxLayoutAlign="start stretch"
+           class="p8">
+    <section fxLayout="row"
+             fxLayoutAlign="space-between center">
+      <p class="mat-title bold m4">Executives</p>
+      <button mat-stroked-button
+              class="m4"
+              (click)="addExecutive()">
+        Add Executive
+      </button>
+    </section>
+    <ng-container *ngIf="app.executives$ | async as executives else loading">
+      <section *ngFor="let e of executives"
+               fxLayout="row"
+               fxLayoutAlign="start center"
+               class="m4 elevated rounded p4"
+               [ngClass]="selected(e) ? 'card-outline-primary' : 'card-outline-accent'"
+               [style.width.px]="320">
+        <p class="m4"
+           fxFlex>{{e.lastName}}, {{e.firstName}}</p>
+        <button mat-icon-button
+                (click)="editExecutive(e)">
+          <mat-icon>edit</mat-icon>
+        </button>
+        <button mat-icon-button
+                (click)="selectExecutive(e)">
+          <mat-icon class="color-primary"
+                    *ngIf="selected(e)">radio_button_checked</mat-icon>
+          <mat-icon *ngIf="!(selected(e))">radio_button_unchecked</mat-icon>
+        </button>
+      </section>
+    </ng-container>
+  </section>
+  <section fxLayout="column"
+           fxLayoutAlign="start stretch"
+           class="p8"
+           fxFlex>
+    <section fxLayout="row"
+             fxLayoutAlign="space-between center">
+      <p class="mat-title bold m4">Associates</p>
+      <button mat-stroked-button
+              class="m4"
+              [disabled]="!(executive)"
+              (click)="addAssociate()">
+        Add Associate
+      </button>
+    </section>
+    <ng-template #message>
+      <p class="m4 mat-subheading-2">Select an Executive to view Associates.</p>
+    </ng-template>
+    <ng-container *ngIf="app.associates$ | async as associates else message">
+      <section *ngIf="associates.length > 0"
+               fxLayout="row | wrap"
+               fxLayoutAlign="start start">
+        <section *ngFor="let a of associates"
+                 fxLayout="row"
+                 fxLayoutAlign="space-between center"
+                 class="m4 elevated rounded p4 card-outline-accent"
+                 [style.width.px]="320">
+          <p class="m4">{{a.lastName}}, {{a.firstName}}</p>
+          <button mat-icon-button
+                  (click)="editAssociate(a)">
+            <mat-icon>edit</mat-icon>
+          </button>
+        </section>
+      </section>
+      <p *ngIf="!(associates.length > 0)"
+         class="m4 mat-body-strong">No Associates Available</p>
+    </ng-container>
+  </section>
 </section>

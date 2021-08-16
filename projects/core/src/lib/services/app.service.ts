@@ -13,6 +13,45 @@ import {
   providedIn: 'root'
 })
 export class AppService {
+  private db = new Database();
+  private associates = new BehaviorSubject<Associate[]>(null);
+  private divisions = new BehaviorSubject<Division[]>(null);
+  private executives = new BehaviorSubject<Executive[]>(null);
+  private organizations = new BehaviorSubject<Organization[]>(null);
+  private positions = new BehaviorSubject<Position[]>(null);
+
+  associates$ = this.associates.asObservable();
+  divisions$ = this.divisions.asObservable();
+  executives$ = this.executives.asObservable();
+  organizations$ = this.organizations.asObservable();
+  positions$ = this.positions.asObservable();
+
+  clearAssociates = () => this.associates.next(null);
+
+  getAssociates = (id: number) => this.associates.next(
+    this.db.getAssociates(id)
+  );
+
+  getDivisions = () => this.divisions.next(this.db.getDivisions());
+
+  getExecutives = () => this.executives.next(this.db.getExecutives());
+
+  getOrganizations = () => this.organizations.next(this.db.getOrganizations());
+
+  getPositions = (id: number) => this.positions.next(
+    this.db.getPositions(id)
+  );
+
+  addExecutive = (executive: Executive) => this.db.addExecutive(executive);
+
+  updateExecutive = (executive: Executive) => this.db.updateExecutive(executive);
+
+  addAssociate = (associate: Associate) => this.db.addAssociate(associate);
+
+  updateAssociate = (associate: Associate) => this.db.updateAssociate(associate);
+}
+
+class Database {
   private db = {
     associates: new Array<Associate>(
       {
@@ -31,6 +70,11 @@ export class AppService {
           city: 'Palm Springs',
           state: 'CA',
           zip: 92264
+        },
+        position: {
+          id: 6,
+          divisionId: 2,
+          value: 'Business Analyst'
         }
       } as Associate,
       {
@@ -49,6 +93,11 @@ export class AppService {
           city: 'Palm Springs',
           state: 'CA',
           zip: 92264
+        },
+        position: {
+          id: 5,
+          divisionId: 2,
+          value: 'Agile Coach'
         }
       } as Associate
     ),
@@ -78,6 +127,11 @@ export class AppService {
           city: 'Dallas',
           state: 'TX',
           zip: 75104
+        },
+        position: {
+          id: 1,
+          divisionId: 1,
+          value: 'Software Engineer'
         }
       } as Executive,
       {
@@ -95,6 +149,11 @@ export class AppService {
           city: 'Pinehurst',
           state: 'NC',
           zip: 28374
+        },
+        position: {
+          id: 1,
+          divisionId: 1,
+          value: 'Software Engineer'
         }
       } as Executive
     ),
@@ -146,35 +205,21 @@ export class AppService {
     )
   }
 
-  private associates = new BehaviorSubject<Associate[]>(null);
-  private divisions = new BehaviorSubject<Division[]>(null);
-  private executives = new BehaviorSubject<Executive[]>(null);
-  private organizations = new BehaviorSubject<Organization[]>(null);
-  private positions = new BehaviorSubject<Position[]>(null);
-
-  associates$ = this.associates.asObservable();
-  divisions$ = this.divisions.asObservable();
-  executives$ = this.executives.asObservable();
-  organizations$ = this.organizations.asObservable();
-  positions$ = this.positions.asObservable();
-
-  getAssociates = (executive: Executive) => this.associates.next(
+  getAssociates = (id: number) =>
     this.db
       .associates
-      .filter(associate => associate.executiveId === executive.id)
-  );
+      .filter(associate => associate.executiveId === id);
 
-  getDivisions = () => this.divisions.next(this.db.divisions);
+  getDivisions = () => this.db.divisions;
 
-  getExecutives = () => this.executives.next(this.db.executives);
+  getExecutives = () => this.db.executives;
 
-  getOrganizations = () => this.organizations.next(this.db.organizations);
+  getOrganizations = () => this.db.organizations;
 
-  getPositions = (division: Division) => this.positions.next(
+  getPositions = (id: number) =>
     this.db
       .positions
-      .filter(position => position.divisionId === division.id)
-  );
+      .filter(position => position.divisionId === id);
 
   addExecutive = (executive: Executive) => this.db.executives.push(executive);
 
