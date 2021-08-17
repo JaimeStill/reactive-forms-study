@@ -6,6 +6,8 @@ Integrated the [Web Storage API](https://developer.mozilla.org/en-US/docs/Web/AP
 
 ## Relevant Files
 
+> Aspects of this app could have been componetized / optimized better, but the intent was to focus on the storage state + Reactive Forms interactions vs. a fully fleshed out app.
+
 * [`StorageState`](./projects/core/src/lib/models/storage-state.ts)
 * [`Associate`](./projects/core/src/lib/models/associate.ts)
   * Particularly the `AssociateForm` function.
