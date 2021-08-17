@@ -3,6 +3,7 @@ import { Position } from './position';
 
 export interface Person {
   id: number;
+  divisionId: number;
   positionId: number;
   lastName: string;
   firstName: string;

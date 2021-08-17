@@ -35,10 +35,7 @@ export class ExecutiveDialog implements OnInit {
   private root = 'reactive-forms';
   private module = 'executive';
 
-  state: Executive;
-  divisionId: number;
-  executiveState: StorageState<Executive>;
-  divisionState: StorageState<number>;
+  state: StorageState<Executive>;
   form: FormGroup;
 
   constructor(
@@ -50,30 +47,23 @@ export class ExecutiveDialog implements OnInit {
   ) { }
 
   private load = () => {
-    const stateKey = this.executive?.id
+    const key = this.executive?.id
       ? this.executive.id.toString()
       : 'new';
 
-    this.executiveState = new StorageState(this.root, this.module, stateKey);
-    this.divisionState = new StorageState(this.root, `${this.module}-divsion`, stateKey);
+    this.state = new StorageState(this.root, this.module, key);
 
-    this.state = this.executiveState.hasState
-      ? this.executiveState.getState()
+    const exec = this.state.hasState
+      ? this.state.getState()
       : this.executive;
 
-    this.divisionId = this.divisionState.hasState
-      ? this.divisionState.getState()
-      : this.state.position?.divisionId
-        ? this.state.position.divisionId
-        : null;
+    if (exec?.divisionId)
+      this.app.getPositions(exec.divisionId);
 
-    if (this.divisionId)
-      this.app.getPositions(this.divisionId);
-
-    this.form = ExecutiveForm(this.state, this.fb, this.core.ssnPattern);
+    this.form = ExecutiveForm(exec, this.fb, this.core.ssnPattern);
   }
 
-  private update = (executive: Executive) => this.executiveState.updateState(executive);
+  private update = (executive: Executive) => this.state.updateState(executive);
 
   ngOnInit() {
     this.app.getDivisions();
@@ -86,24 +76,25 @@ export class ExecutiveDialog implements OnInit {
       .subscribe((executive: Executive) => this.update(executive));
   }
 
-  hasCache = () => this.executiveState.hasState || this.divisionState.hasState;
+  get organizationId() { return this.form?.get('organizationId') }
+  get divisionId() { return this.form?.get('divisionId') }
+  get positionId() { return this.form?.get('positionId') }
+  get lastName() { return this.form?.get('lastName') }
+  get firstName() { return this.form?.get('firstName') }
+  get jobTitle() { return this.form?.get('jobTitle') }
+  get ssn() { return this.form?.get('ssn') }
 
   clearCache = () => {
     this.form.reset(this.executive, { emitEvent: false });
-    this.divisionId = this.executive?.position?.divisionId;
-    this.executiveState.clearState();
-    this.divisionState.clearState();
+    this.app.getPositions(this.executive?.divisionId);
+    this.state.clearState();
   }
 
-  selectDivision = (event: MatSelectChange) => {
-    this.divisionId = event.value;
-    this.divisionState.updateState(event.value);
-    this.app.getPositions(event.value);
-  }
+  selectDivision = (event: MatSelectChange) => this.app.getPositions(event.value);
 
   save = () => {
-    if (this.form.valid) {
-      this.form.value.id
+    if (this.form?.valid) {
+      this.form?.value?.id
         ? this.app.updateExecutive(this.form.value)
         : this.app.addExecutive(this.form.value);
 

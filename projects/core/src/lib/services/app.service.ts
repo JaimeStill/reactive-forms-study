@@ -57,6 +57,7 @@ class Database {
       {
         id: 1,
         executiveId: 1,
+        divisionId: 2,
         positionId: 6,
         lastName: 'Nielson',
         firstName: 'Ryan',
@@ -70,16 +71,12 @@ class Database {
           city: 'Palm Springs',
           state: 'CA',
           zip: 92264
-        },
-        position: {
-          id: 6,
-          divisionId: 2,
-          value: 'Business Analyst'
         }
       } as Associate,
       {
         id: 2,
         executiveId: 2,
+        divisionId: 2,
         positionId: 5,
         lastName: 'Daniels',
         firstName: 'James',
@@ -93,11 +90,6 @@ class Database {
           city: 'Palm Springs',
           state: 'CA',
           zip: 92264
-        },
-        position: {
-          id: 5,
-          divisionId: 2,
-          value: 'Agile Coach'
         }
       } as Associate
     ),
@@ -115,6 +107,7 @@ class Database {
       {
         id: 1,
         organizationId: 1,
+        divisionId: 1,
         positionId: 1,
         lastName: 'Still',
         firstName: 'Jaime',
@@ -127,16 +120,12 @@ class Database {
           city: 'Dallas',
           state: 'TX',
           zip: 75104
-        },
-        position: {
-          id: 1,
-          divisionId: 1,
-          value: 'Software Engineer'
         }
       } as Executive,
       {
         id: 2,
         organizationId: 2,
+        divisionId: 1,
         positionId: 1,
         lastName: 'Perry',
         firstName: 'Philip',
@@ -149,11 +138,6 @@ class Database {
           city: 'Pinehurst',
           state: 'NC',
           zip: 28374
-        },
-        position: {
-          id: 1,
-          divisionId: 1,
-          value: 'Software Engineer'
         }
       } as Executive
     ),

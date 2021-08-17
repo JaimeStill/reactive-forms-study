@@ -21,6 +21,7 @@ export const ExecutiveForm = (executive: Executive, fb: FormBuilder, ssnPattern:
   fb.group({
     id: [executive.id],
     organizationId: [executive.organizationId, Validators.required],
+    divisionId: [executive.divisionId, Validators.required],
     positionId: [executive.positionId, Validators.required],
     lastName: [executive.lastName, Validators.required],
     firstName: [executive.firstName, Validators.required],

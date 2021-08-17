@@ -19,6 +19,7 @@ export const AssociateForm = (associate: Associate, fb: FormBuilder): FormGroup 
   fb.group({
     id: [associate.id],
     executiveId: [associate.executiveId, Validators.required],
+    divisionId: [associate.divisionId, Validators.required],
     positionId: [associate.positionId, Validators.required],
     lastName: [associate.lastName, Validators.required],
     firstName: [associate.firstName, Validators.required],
