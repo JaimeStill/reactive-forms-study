@@ -28,6 +28,8 @@ export class AppService {
 
   clearAssociates = () => this.associates.next(null);
 
+  clearPositions = () => this.positions.next(null);
+
   getAssociates = (id: number) => this.associates.next(
     this.db.getAssociates(id)
   );
@@ -193,6 +195,20 @@ class Database {
     )
   }
 
+  private generateId = (arr: number[]) => arr.reduce((a, v) => a = v > a ? v : a) + 1;
+
+  private generateAssociateId = () => this.generateId(
+    this.db
+      .associates
+      .map(x => x.id)
+  );
+
+  private generateExecutiveId = () => this.generateId(
+    this.db
+      .executives
+      .map(x => x.id)
+  );
+
   getAssociates = (id: number) =>
     this.db
       .associates
@@ -209,7 +225,10 @@ class Database {
       .positions
       .filter(position => position.divisionId === id);
 
-  addExecutive = (executive: Executive) => this.db.executives.push(executive);
+  addExecutive = (executive: Executive) => {
+    executive.id = this.generateExecutiveId();
+    this.db.executives.push(executive);
+  }
 
   updateExecutive = (executive: Executive) => {
     const index = this.db.executives.findIndex(ex => ex.id === executive.id);
@@ -227,7 +246,10 @@ class Database {
       this.db.executives.splice(index, 1);
   }
 
-  addAssociate = (associate: Associate) => this.db.associates.push(associate);
+  addAssociate = (associate: Associate) => {
+    associate.id = this.generateAssociateId();
+    this.db.associates.push(associate);
+  }
 
   updateAssociate = (associate: Associate) => {
     const index = this.db.associates.findIndex(ass => ass.id === associate.id);

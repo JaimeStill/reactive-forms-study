@@ -15,78 +15,73 @@ import {
 } from '@angular/forms';
 
 import {
-  Executive,
-  ExecutiveForm,
+  Associate,
+  AssociateForm,
   StorageState
 } from '../../models';
 
-import {
-  AppService,
-  CoreService,
-} from '../../services';
-
 import { MatSelectChange } from '@angular/material/select';
+import { AppService } from '../../services';
 
 @Component({
-  selector: 'executive-dialog',
-  templateUrl: 'executive.dialog.html'
+  selector: 'associate-dialog',
+  templateUrl: 'associate.dialog.html'
 })
-export class ExecutiveDialog implements OnInit {
+export class AssociateDialog implements OnInit {
   private root = 'reactive-forms';
-  private module = 'executive';
+  private module = 'associate';
 
-  state: StorageState<Executive>;
+  state: StorageState<Associate>;
   form: FormGroup;
 
   constructor(
-    private core: CoreService,
-    private dialog: MatDialogRef<ExecutiveDialog>,
+    private dialog: MatDialogRef<AssociateDialog>,
     private fb: FormBuilder,
     public app: AppService,
-    @Inject(MAT_DIALOG_DATA) public executive: Executive
+    @Inject(MAT_DIALOG_DATA) public associate: Associate
   ) { }
 
   private load = () => {
-    const key = this.executive?.id
-      ? this.executive.id.toString()
+    const key = this.associate?.id
+      ? this.associate.id.toString()
       : 'new';
 
     this.state = new StorageState(this.root, this.module, key);
 
-    const exec = this.state.hasState
+    const ass = this.state.hasState
       ? this.state.getState()
-      : this.executive;
+      : this.associate;
 
-    if (exec?.divisionId)
-      this.app.getPositions(exec.divisionId);
+    if (ass?.divisionId)
+      this.app.getPositions(ass.divisionId);
 
-    this.form = ExecutiveForm(exec, this.fb, this.core.ssnPattern);
+    this.form = AssociateForm(ass, this.fb);
   }
 
   ngOnInit() {
     this.app.getDivisions();
-    this.app.getOrganizations();
 
     this.load();
 
     this.form
       .valueChanges
-      .subscribe((executive: Executive) => this.state.updateState(executive));
+      .subscribe((associate: Associate) => this.state.updateState(associate));
   }
 
-  get organizationId() { return this.form?.get('organizationId') }
+  get executiveId() { return this.form?.get('executiveId') }
   get divisionId() { return this.form?.get('divisionId') }
   get positionId() { return this.form?.get('positionId') }
   get lastName() { return this.form?.get('lastName') }
   get firstName() { return this.form?.get('firstName') }
   get jobTitle() { return this.form?.get('jobTitle') }
-  get ssn() { return this.form?.get('ssn') }
+  get email() { return this.form?.get('email') }
+  get phone() { return this.form?.get('phone') }
 
   clearCache = () => {
-    this.form.reset(this.executive, { emitEvent: false });
+    this.form.reset(this.associate, { emitEvent: false });
 
-    this.executive?.divisionId
-      ? this.app.getPositions(this.executive.divisionId)
+    this.associate?.divisionId
+      ? this.app.getPositions(this.associate.divisionId)
       : this.app.clearPositions();
 
     this.state.clearState();
@@ -97,8 +92,8 @@ export class ExecutiveDialog implements OnInit {
   save = () => {
     if (this.form?.valid) {
       this.form?.value?.id
-        ? this.app.updateExecutive(this.form.value)
-        : this.app.addExecutive(this.form.value);
+        ? this.app.updateAssociate(this.form.value)
+        : this.app.addAssociate(this.form.value);
 
       this.clearCache();
       this.dialog.close(true);

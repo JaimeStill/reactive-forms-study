@@ -32,10 +32,7 @@ export const AssociateForm = (associate: Associate, fb: FormBuilder): FormGroup 
         Validators.email
       ]
     ],
-    phone: [
-      associate.phone,
-      Validators.required
-    ],
+    phone: [associate.phone, Validators.required],
     isActive: [associate.isActive],
     address: fb.group({
       street: [associate.address.street],

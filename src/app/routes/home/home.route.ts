@@ -7,6 +7,7 @@ import {
   Address,
   AppService,
   Associate,
+  AssociateDialog,
   ConfirmDialog,
   Executive,
   ExecutiveDialog
@@ -76,9 +77,24 @@ export class HomeRoute implements OnInit {
     }
   });
 
-  addAssociate = () => { }
+  addAssociate = () => this.dialog.open(AssociateDialog, {
+    data: {
+      executiveId: this.executive?.id,
+      address: {} as Address
+    } as Associate,
+    disableClose: true,
+    width: '480px'
+  })
+  .afterClosed()
+  .subscribe(res => res && this.executive?.id && this.app.getAssociates(this.executive.id));
 
-  editAssociate = (a: Associate) => { }
+  editAssociate = (a: Associate) => this.dialog.open(AssociateDialog, {
+    data: Object.assign({} as Associate, a),
+    disableClose: true,
+    width: '480px'
+  })
+  .afterClosed()
+  .subscribe(res => res && this.executive?.id && this.app.getAssociates(this.executive.id));
 
   removeAssociate = (a: Associate) => this.dialog.open(ConfirmDialog, {
     data: {
