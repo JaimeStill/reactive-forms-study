@@ -46,9 +46,13 @@ export class AppService {
 
   updateExecutive = (executive: Executive) => this.db.updateExecutive(executive);
 
+  removeExecutive = (executive: Executive) => this.db.removeExecutive(executive);
+
   addAssociate = (associate: Associate) => this.db.addAssociate(associate);
 
   updateAssociate = (associate: Associate) => this.db.updateAssociate(associate);
+
+  removeAssociate = (associate: Associate) => this.db.removeAssociate(associate);
 }
 
 class Database {
@@ -210,8 +214,17 @@ class Database {
   updateExecutive = (executive: Executive) => {
     const index = this.db.executives.findIndex(ex => ex.id === executive.id);
 
-    if (index)
+    if (typeof index === 'number')
       this.db.executives[index] = executive;
+  }
+
+  removeExecutive = (executive: Executive) => {
+    this.db.associates = this.db.associates.filter(x => x.executiveId !== executive?.id);
+
+    const index = this.db.executives.findIndex(ex => ex.id === executive?.id);
+
+    if (typeof index === 'number')
+      this.db.executives.splice(index, 1);
   }
 
   addAssociate = (associate: Associate) => this.db.associates.push(associate);
@@ -219,7 +232,14 @@ class Database {
   updateAssociate = (associate: Associate) => {
     const index = this.db.associates.findIndex(ass => ass.id === associate.id);
 
-    if (index)
+    if (typeof index === 'number')
       this.db.associates[index] = associate;
+  }
+
+  removeAssociate = (associate: Associate) => {
+    const index = this.db.associates.findIndex(ass => ass.id === associate.id);
+
+    if (typeof index === 'number')
+      this.db.associates.splice(index, 1);
   }
 }

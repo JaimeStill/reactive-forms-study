@@ -26,6 +26,11 @@
         <p class="m4"
            fxFlex>{{e.lastName}}, {{e.firstName}}</p>
         <button mat-icon-button
+                color="warn"
+                (click)="removeExecutive(e)">
+          <mat-icon>delete_outlined</mat-icon>
+        </button>
+        <button mat-icon-button
                 (click)="editExecutive(e)">
           <mat-icon>edit</mat-icon>
         </button>
@@ -61,10 +66,16 @@
                fxLayoutAlign="start start">
         <section *ngFor="let a of associates"
                  fxLayout="row"
-                 fxLayoutAlign="space-between center"
+                 fxLayoutAlign="start center"
                  class="m4 elevated rounded p4 card-outline-accent"
                  [style.width.px]="320">
-          <p class="m4">{{a.lastName}}, {{a.firstName}}</p>
+          <p class="m4"
+             fxFlex>{{a.lastName}}, {{a.firstName}}</p>
+          <button mat-icon-button
+                  color="warn"
+                  (click)="removeAssociate(a)">
+            <mat-icon>delete_outlined</mat-icon>
+          </button>
           <button mat-icon-button
                   (click)="editAssociate(a)">
             <mat-icon>edit</mat-icon>

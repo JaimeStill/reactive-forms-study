@@ -7,6 +7,7 @@ import {
   Address,
   AppService,
   Associate,
+  ConfirmDialog,
   Executive,
   ExecutiveDialog
 } from 'core';
@@ -59,8 +60,40 @@ export class HomeRoute implements OnInit {
   .afterClosed()
   .subscribe(res => res && this.app.getExecutives());
 
+  removeExecutive = (e: Executive) => this.dialog.open(ConfirmDialog, {
+    data: {
+      title: 'Remove Executive?',
+      content: `Are you sure you want to remove ${e.lastName}, ${e.firstName}?`
+    },
+    disableClose: true,
+    autoFocus: false
+  })
+  .afterClosed()
+  .subscribe(res => {
+    if (res) {
+      this.app.removeExecutive(e);
+      this.app.getExecutives();
+    }
+  });
+
   addAssociate = () => { }
 
   editAssociate = (a: Associate) => { }
+
+  removeAssociate = (a: Associate) => this.dialog.open(ConfirmDialog, {
+    data: {
+      title: 'Remove Associate?',
+      content: `Are you sure you want to remove ${a.lastName}, ${a.firstName}?`
+    },
+    disableClose: true,
+    autoFocus: false
+  })
+  .afterClosed()
+  .subscribe(res => {
+    if (res) {
+      this.app.removeAssociate(a);
+      this.executive && this.app.getAssociates(this.executive.id);
+    }
+  });
 }
 
