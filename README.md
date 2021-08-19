@@ -1,5 +1,7 @@
 # Reactive Forms with Session Storage
 
+[![Deploy Pages](https://github.com/JaimeStill/reactive-forms-study/actions/workflows/deploy-pages.yml/badge.svg)](https://github.com/JaimeStill/reactive-forms-study/actions/workflows/deploy-pages.yml)
+
 [![reactive-forms-session-state](https://user-images.githubusercontent.com/14102723/129758896-6a8af5a2-7e9b-4e95-9478-6da7220c5ac0.gif)](https://user-images.githubusercontent.com/14102723/129758896-6a8af5a2-7e9b-4e95-9478-6da7220c5ac0.gif)
 
 Integrated the [Web Storage API](https://developer.mozilla.org/en-US/docs/Web/API/Web_Storage_API) with [Angular Reactive Forms](https://angular.io/guide/forms-overview) with the intent of extending the form experience with cached inputs. A unique storage item is generated based on the context of the form (*create* or *update* an `Executive` or `Associate`).
